@@ -1,0 +1,30 @@
+[project]
+name = "agent-framework-demos"
+version = "0.1.0"
+description = "M365 Agent Application"
+readme = "README.md"
+requires-python = ">=3.13, <4.0.0"
+dependencies = [
+    "azure-identity==1.25.3",
+    "aiohttp==3.13.3",
+    "python-dotenv==1.1.1",
+    "agent-framework-azure-ai==1.0.0rc4",
+    "agent-framework-core==1.0.0rc4",
+    "agent-framework-devui==1.0.0b260311",
+    "azure-monitor-opentelemetry-exporter==1.0.0b49",
+    "pydantic==2.12.5",
+]
+
+[tool.uv]
+prerelease = "allow"
+
+# Explicit package discovery to avoid setuptools flat-layout error.
+# We deliberately ship the two top-level packages used by the runtime.
+# If we later refactor into a src/ layout, this section can be removed
+# in favor of a find directive pointing at src/m365_agent_app.
+[tool.setuptools]
+packages = []
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
