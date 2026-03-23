@@ -8,12 +8,13 @@ dependencies = [
     "azure-identity==1.25.3",
     "aiohttp==3.13.3",
     "python-dotenv==1.1.1",
-    "agent-framework-azure-ai==1.0.0rc4",
-    "agent-framework-core==1.0.0rc4",
-    "agent-framework-devui==1.0.0b260311",
+    "agent-framework-azure-ai==1.0.0rc5",
+    "agent-framework-core==1.0.0rc5",
+    "agent-framework-devui==1.0.0b260319",
     "azure-monitor-opentelemetry-exporter==1.0.0b49",
     "pydantic==2.12.5",
     "azure-ai-projects==2.0.1",
+    "agent-framework-orchestrations==1.0.0b260319",
 ]
 
 [tool.uv]

@@ -33,7 +33,6 @@ def main():
                     """,
         name="IssueAnalyzerAgent",
         default_options={"response_format": IssueAnalyzer},
-        tool_choice=ToolMode(mode="auto"),
         tools=[timePerIssueTools.calculate_time_based_on_complexity]
     )
 
