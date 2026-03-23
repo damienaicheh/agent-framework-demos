@@ -80,7 +80,7 @@ def main():
         participants=[issue_analyzer_agent, github_agent],
         intermediate_outputs=True,
         orchestrator_agent=AzureAIClient(**settings).as_agent(
-            name="IssueCreationGroupChatWorkflow",
+            name="IssueCreatorOrchestrator",
             instructions="""
                 You are a workflow manager that coordinates issue creation.
                 Decide which participant should speak next.
