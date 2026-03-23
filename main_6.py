@@ -41,7 +41,7 @@ def main():
     github_tool = MCPTool(
         server_label="GitHub",
         server_url="https://api.githubcopilot.com/mcp",
-        require_approval="always",
+        require_approval="never",
         project_connection_id="GitHub",
     )
 
