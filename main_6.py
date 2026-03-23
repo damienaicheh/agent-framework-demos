@@ -60,11 +60,22 @@ def main():
         orchestrator_agent=AzureAIClient(**settings).as_agent(
             name="IssueCreationGroupChatWorkflow",
             instructions="""
-                You are a workflow manager that helps create GitHub issues based on user input.
-                First, analyze the input using the Issue Analyzer Agent to determine the issue type, likely cause, and complexity.
-                If an issue requires additional information from documentation, ask other specialized agents.
-                Finally, create a GitHub issue using the GitHub Agent with the analyzed information.
+                You are a workflow manager that coordinates issue creation.
+                Decide which participant should speak next.
+
+                Output rules are mandatory:
+                - Return ONLY one raw JSON object.
+                - Do NOT wrap JSON in markdown fences.
+                - Do NOT add extra text before or after JSON.
+                - Use exactly these keys: terminate, reason, next_speaker, final_message.
+                - If terminate is false, next_speaker must be one of: IssueAnalyzerAgent, GitHubAgent.
+
+                Workflow policy:
+                1. Ask IssueAnalyzerAgent first to classify and estimate complexity.
+                2. Then ask GitHubAgent to create the issue.
+                3. Terminate once GitHubAgent confirms completion.
             """,
+            default_options={"temperature": 0},
         ),
     ).build()
 
