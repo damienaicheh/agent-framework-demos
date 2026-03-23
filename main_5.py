@@ -27,10 +27,16 @@ def main():
 
     issue_analyzer_agent = AzureAIClient(**settings).as_agent(
         instructions="""
-                        You are analyzing issues.
+                        You are analyzing issues. 
                         If the ask is a feature request the complexity should be 'NA'.
                         If the issue is a bug, analyze the stack trace and provide the likely cause and complexity level.
-                        Always provide the time required to fix the issue by using the TimePerIssueTools.
+
+                        CRITICAL: You MUST use the provided tools for ALL calculations:
+                        1. First determine the complexity level
+                        2. Use the available tools to calculate time and cost estimates based on that complexity
+                        3. Never provide estimates without using the tools first
+
+                        Your response should contain only values obtained from the tool calls.
                     """,
         name="IssueAnalyzerAgent",
         default_options={"response_format": IssueAnalyzer},
