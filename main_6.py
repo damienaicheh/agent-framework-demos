@@ -1,7 +1,6 @@
 import logging
 import os
 
-from agent_framework import ToolMode
 from agent_framework.azure import AzureAIClient
 from agent_framework.orchestrations import GroupChatBuilder
 from agent_framework_devui import serve
@@ -55,7 +54,7 @@ def main():
         tools=[github_tool]
     )
 
-    workflow = GroupChatBuilder(
+    group_workflow = GroupChatBuilder(
         participants=[issue_analyzer_agent, github_agent],
         intermediate_outputs=True,
         orchestrator_agent=AzureAIClient(**settings).as_agent(
@@ -69,7 +68,7 @@ def main():
         ),
     ).build()
 
-    serve(entities=[issue_analyzer_agent, github_agent, workflow],
+    serve(entities=[issue_analyzer_agent, github_agent, group_workflow],
           port=8090, auto_open=True)
 
 
