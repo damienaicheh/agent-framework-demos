@@ -1,7 +1,6 @@
 import logging
 import os
 
-from agent_framework import ToolMode
 from agent_framework.azure import AzureAIClient
 from agent_framework_devui import serve
 from azure.identity.aio import AzureCliCredential
@@ -22,10 +21,10 @@ def main():
         "model_deployment_name": os.environ["AZURE_AI_MODEL_DEPLOYMENT_NAME"],
         "credential": credential,
     }
-    client = AzureAIClient(**settings)
+
     timePerIssueTools = TimePerIssueTools()
 
-    issue_analyzer_agent = client.as_agent(
+    issue_analyzer_agent = AzureAIClient(**settings).as_agent(
         instructions="""
                         You are analyzing issues.
                         If the ask is a feature request the complexity should be 'NA'.

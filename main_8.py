@@ -39,14 +39,26 @@ def main():
         tools=[timePerIssueTools.calculate_time_based_on_complexity],
     )
 
-    github_agent = AzureAIClient(**settings).as_agent(
+    github_client_agent = AzureAIClient(**settings)
+    file_search_tool = github_client_agent.get_file_search_tool(
+        vector_store_ids=[os.environ["VECTOR_STORE_ID"]]
+    )
+    github_agent = github_client_agent.as_agent(
         name="GitHubAgent",
         instructions=f"""
-            You are a helpful assistant that can create an issue on the user's GitHub repository based on the input provided.
-            To create the issue, use the GitHub MCP tool.
+            You are a helpful assistant that can create GitHub issues following Contoso's guidelines.
             You work on this repository: {os.environ["GITHUB_REPOSITORY"]}
+            
+            CRITICAL WORKFLOW:
+            1. ALWAYS use the File Search tool FIRST to search for "github issues guidelines" or "issue template" to find the proper formatting and structure
+            2. Follow the Contoso GitHub Issues Guidelines found in the vector store
+            3. Use the retrieved guidelines to format the issue properly with correct structure, labels, and format
+            4. Then use the GitHub MCP tool to create the issue with the properly formatted content
+            
+            IMPORTANT: You MUST search for guidelines BEFORE creating any issue to ensure compliance with company standards.
         """,
         tools=[
+            file_search_tool,
             MCPTool(
                 server_label="GitHub",
                 server_url="https://api.githubcopilot.com/mcp",

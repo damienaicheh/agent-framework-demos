@@ -20,8 +20,8 @@ def main():
         "model_deployment_name": os.environ["AZURE_AI_MODEL_DEPLOYMENT_NAME"],
         "credential": credential,
     }
-    client = AzureAIClient(**settings)
-    issue_analyzer_agent = client.as_agent(
+
+    issue_analyzer_agent = AzureAIClient(**settings).as_agent(
         instructions="""
                         You are analyzing issues.
                         If the ask is a feature request the complexity should be 'NA'.

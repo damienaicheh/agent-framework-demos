@@ -22,10 +22,10 @@ def main():
         "model_deployment_name": os.environ["AZURE_AI_MODEL_DEPLOYMENT_NAME"],
         "credential": credential,
     }
-    client = AzureAIClient(**settings)
+
     timePerIssueTools = TimePerIssueTools()
 
-    issue_analyzer_agent = client.as_agent(
+    issue_analyzer_agent = AzureAIClient(**settings).as_agent(
         instructions="""
                         You are analyzing issues.
                         If the ask is a feature request the complexity should be 'NA'.
@@ -36,13 +36,6 @@ def main():
         tools=[timePerIssueTools.calculate_time_based_on_complexity]
     )
 
-    github_tool = MCPTool(
-        server_label="GitHub",
-        server_url="https://api.githubcopilot.com/mcp",
-        require_approval="never",
-        project_connection_id="GitHub",
-    )
-
     github_agent = AzureAIClient(**settings).as_agent(
         name="GitHubAgent",
         instructions=f"""
@@ -50,7 +43,14 @@ def main():
             To create the issue, use the GitHub MCP tool.
             You work on this repository: {os.environ["GITHUB_REPOSITORY"]}
         """,
-        tools=[github_tool]
+        tools=[
+            MCPTool(
+                server_label="GitHub",
+                server_url="https://api.githubcopilot.com/mcp",
+                require_approval="never",
+                project_connection_id="GitHub",
+            )
+        ]
     )
 
     serve(entities=[issue_analyzer_agent, github_agent],
