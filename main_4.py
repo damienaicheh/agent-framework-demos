@@ -29,10 +29,11 @@ def main():
                         You are analyzing issues.
                         If the ask is a feature request the complexity should be 'NA'.
                         If the issue is a bug, analyze the stack trace and provide the likely cause and complexity level.
+                        Always provide the time required to fix the issue by using the TimePerIssueTools.
                     """,
         name="IssueAnalyzerAgent",
         default_options={"response_format": IssueAnalyzer},
-        tools=[timePerIssueTools.calculate_time_based_on_complexity]
+        tools=[timePerIssueTools.calculate_time_based_on_complexity],
     )
 
     serve(entities=[issue_analyzer_agent], port=8090, auto_open=True)
